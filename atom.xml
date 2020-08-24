@@ -1,0 +1,389 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>峰绘の琴师</title>
+  
+  <subtitle>Code Life</subtitle>
+  <link href="/blog/atom.xml" rel="self"/>
+  
+  <link href="http://kidtic.gitee.io/blog/"/>
+  <updated>2020-06-04T06:35:15.000Z</updated>
+  <id>http://kidtic.gitee.io/blog/</id>
+  
+  <author>
+    <name>KT琴师</name>
+    
+  </author>
+  
+  <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>【视觉SLAM十四讲-个人笔记】李群与李代数</title>
+    <link href="http://kidtic.gitee.io/blog/2020/06/04/shi-jue-slam-shi-si-jiang-ge-ren-bi-ji-li-qun-yu-li-dai-shu/"/>
+    <id>http://kidtic.gitee.io/blog/2020/06/04/shi-jue-slam-shi-si-jiang-ge-ren-bi-ji-li-qun-yu-li-dai-shu/</id>
+    <published>2020-06-04T12:07:04.000Z</published>
+    <updated>2020-06-04T06:35:15.000Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+    
+      <category term="学习笔记" scheme="http://kidtic.gitee.io/blog/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    
+    
+      <category term="视觉SLAM" scheme="http://kidtic.gitee.io/blog/tags/%E8%A7%86%E8%A7%89SLAM/"/>
+    
+      <category term="机器视觉" scheme="http://kidtic.gitee.io/blog/tags/%E6%9C%BA%E5%99%A8%E8%A7%86%E8%A7%89/"/>
+    
+      <category term="三维视觉" scheme="http://kidtic.gitee.io/blog/tags/%E4%B8%89%E7%BB%B4%E8%A7%86%E8%A7%89/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>【算法笔记】买卖股票问题--DP/贪心算法</title>
+    <link href="http://kidtic.gitee.io/blog/2020/05/24/suan-fa-bi-ji-mai-mai-gu-piao-wen-ti-dp-tan-xin-suan-fa/"/>
+    <id>http://kidtic.gitee.io/blog/2020/05/24/suan-fa-bi-ji-mai-mai-gu-piao-wen-ti-dp-tan-xin-suan-fa/</id>
+    <published>2020-05-23T18:10:05.000Z</published>
+    <updated>2020-05-23T10:25:55.000Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;给定一个数组，它的第 i 个元素是一支给定的股票在第 i 天的价格。&lt;br&gt;设计一个算法来计算你所能获取的最大利润。你最多可以完成 k 笔交易。&lt;br&gt;注意: 你不能同时参与多笔交易（你必须在再次购买前出售掉之前的股票）。 &lt;/p&gt;
+&lt;p&gt;示例
+        
+      
+    
+    </summary>
+    
+    
+      <category term="学习笔记" scheme="http://kidtic.gitee.io/blog/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    
+    
+      <category term="算法" scheme="http://kidtic.gitee.io/blog/tags/%E7%AE%97%E6%B3%95/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>【算法笔记】动态规划</title>
+    <link href="http://kidtic.gitee.io/blog/2020/05/16/suan-fa-bi-ji-dong-tai-gui-hua/"/>
+    <id>http://kidtic.gitee.io/blog/2020/05/16/suan-fa-bi-ji-dong-tai-gui-hua/</id>
+    <published>2020-05-15T16:56:03.000Z</published>
+    <updated>2020-05-15T10:02:34.000Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;什么是动态规划&quot;&gt;&lt;a href=&quot;#什么是动态规划&quot; class=&quot;headerlink&quot; title=&quot;什么是动态规划&quot;&gt;&lt;/a&gt;什么是动态规划&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;动态规划&lt;/strong&gt;（dynamic
+        
+      
+    
+    </summary>
+    
+    
+      <category term="学习笔记" scheme="http://kidtic.gitee.io/blog/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    
+    
+      <category term="算法" scheme="http://kidtic.gitee.io/blog/tags/%E7%AE%97%E6%B3%95/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>【视觉SLAM十四讲-个人笔记】三维空间刚体运动</title>
+    <link href="http://kidtic.gitee.io/blog/2020/05/15/shi-jue-slam-shi-si-jiang-ge-ren-bi-ji-san-wei-kong-jian-gang-ti-yun-dong/"/>
+    <id>http://kidtic.gitee.io/blog/2020/05/15/shi-jue-slam-shi-si-jiang-ge-ren-bi-ji-san-wei-kong-jian-gang-ti-yun-dong/</id>
+    <published>2020-05-14T20:17:33.000Z</published>
+    <updated>2020-05-14T13:43:49.000Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+    
+      <category term="学习笔记" scheme="http://kidtic.gitee.io/blog/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    
+    
+      <category term="视觉SLAM" scheme="http://kidtic.gitee.io/blog/tags/%E8%A7%86%E8%A7%89SLAM/"/>
+    
+      <category term="机器视觉" scheme="http://kidtic.gitee.io/blog/tags/%E6%9C%BA%E5%99%A8%E8%A7%86%E8%A7%89/"/>
+    
+      <category term="三维视觉" scheme="http://kidtic.gitee.io/blog/tags/%E4%B8%89%E7%BB%B4%E8%A7%86%E8%A7%89/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>【视觉SLAM十四讲-个人笔记】初识SLAM</title>
+    <link href="http://kidtic.gitee.io/blog/2020/05/14/shi-jue-slam-shi-si-jiang-ge-ren-bi-ji-chu-shi-slam/"/>
+    <id>http://kidtic.gitee.io/blog/2020/05/14/shi-jue-slam-shi-si-jiang-ge-ren-bi-ji-chu-shi-slam/</id>
+    <published>2020-05-13T21:43:13.000Z</published>
+    <updated>2020-05-13T14:02:09.000Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;视觉SLAM十四讲这本书应该算是非常好理解的一本书了，而且讲的十分到位，不仅可以学习视觉SLAM的知识，对于一些工程上的设计也对我有启发。这里不会讲解视觉SLAM的内容，只是进行一些小总结与提炼，以及读后感。&lt;/p&gt;
+&lt;h2 id=&quot;经典视觉SLAM框架&quot;&gt;&lt;a
+        
+      
+    
+    </summary>
+    
+    
+      <category term="学习笔记" scheme="http://kidtic.gitee.io/blog/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    
+    
+      <category term="视觉SLAM" scheme="http://kidtic.gitee.io/blog/tags/%E8%A7%86%E8%A7%89SLAM/"/>
+    
+      <category term="机器视觉" scheme="http://kidtic.gitee.io/blog/tags/%E6%9C%BA%E5%99%A8%E8%A7%86%E8%A7%89/"/>
+    
+      <category term="三维视觉" scheme="http://kidtic.gitee.io/blog/tags/%E4%B8%89%E7%BB%B4%E8%A7%86%E8%A7%89/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>deepin-wine 2.18-22 最新版本QQ微信安装以及bug</title>
+    <link href="http://kidtic.gitee.io/blog/2020/05/14/deepin-wine-2-18-22-zui-xin-ban-ben-qq-wei-xin-an-zhuang-yi-ji-bug/"/>
+    <id>http://kidtic.gitee.io/blog/2020/05/14/deepin-wine-2-18-22-zui-xin-ban-ben-qq-wei-xin-an-zhuang-yi-ji-bug/</id>
+    <published>2020-05-13T20:15:53.000Z</published>
+    <updated>2020-05-13T12:17:49.000Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;安装&quot;&gt;&lt;a href=&quot;#安装&quot; class=&quot;headerlink&quot; title=&quot;安装&quot;&gt;&lt;/a&gt;安装&lt;/h2&gt;&lt;p&gt;原版本不能用了，这里给出一个sh脚本直接安装最新版本的deepin-wine&lt;/p&gt;
+&lt;pre class=&quot;
+        
+      
+    
+    </summary>
+    
+    
+      <category term="技术总结" scheme="http://kidtic.gitee.io/blog/categories/%E6%8A%80%E6%9C%AF%E6%80%BB%E7%BB%93/"/>
+    
+    
+      <category term="Linux" scheme="http://kidtic.gitee.io/blog/tags/Linux/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>【Linux】自启动程序</title>
+    <link href="http://kidtic.gitee.io/blog/2020/05/14/linux-zi-qi-dong-cheng-xu/"/>
+    <id>http://kidtic.gitee.io/blog/2020/05/14/linux-zi-qi-dong-cheng-xu/</id>
+    <published>2020-05-13T20:07:46.000Z</published>
+    <updated>2020-05-13T12:13:16.000Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;step-1&quot;&gt;&lt;a href=&quot;#step-1&quot; class=&quot;headerlink&quot; title=&quot;step.1&quot;&gt;&lt;/a&gt;step.1&lt;/h2&gt;&lt;p&gt;编写启动shell脚本：zzqapp.sh&lt;/p&gt;
+&lt;pre class=&quot;
+        
+      
+    
+    </summary>
+    
+    
+      <category term="技术总结" scheme="http://kidtic.gitee.io/blog/categories/%E6%8A%80%E6%9C%AF%E6%80%BB%E7%BB%93/"/>
+    
+    
+      <category term="Linux" scheme="http://kidtic.gitee.io/blog/tags/Linux/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>【Linux】C多线程编程：互斥锁</title>
+    <link href="http://kidtic.gitee.io/blog/2020/05/14/linux-c-duo-xian-cheng-bian-cheng-hu-chi-suo/"/>
+    <id>http://kidtic.gitee.io/blog/2020/05/14/linux-c-duo-xian-cheng-bian-cheng-hu-chi-suo/</id>
+    <published>2020-05-13T19:52:24.000Z</published>
+    <updated>2020-05-13T12:06:50.000Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;互斥量从本质上说就是一把锁, 提供对共享资源的保护访问。其基本原理就是在调用&lt;font color=red&gt;pthread_mutex_lock&lt;/font&gt;函数后 互斥锁为上锁状态，在其他线程里如果出现了&lt;font
+        
+      
+    
+    </summary>
+    
+    
+      <category term="技术总结" scheme="http://kidtic.gitee.io/blog/categories/%E6%8A%80%E6%9C%AF%E6%80%BB%E7%BB%93/"/>
+    
+    
+      <category term="Linux" scheme="http://kidtic.gitee.io/blog/tags/Linux/"/>
+    
+      <category term="c++" scheme="http://kidtic.gitee.io/blog/tags/c/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>YOLO3网络配置与训练</title>
+    <link href="http://kidtic.gitee.io/blog/2020/05/14/yolo3-wang-luo-pei-zhi-yu-xun-lian/"/>
+    <id>http://kidtic.gitee.io/blog/2020/05/14/yolo3-wang-luo-pei-zhi-yu-xun-lian/</id>
+    <published>2020-05-13T19:46:54.000Z</published>
+    <updated>2020-05-13T12:05:50.000Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;环境：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;pop_os(ubuntu18)&lt;/li&gt;
+&lt;li&gt;cuda9&lt;/li&gt;
+&lt;li&gt;opencv3.2&lt;/li&gt;
+&lt;li&gt;GTX1070&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&quot;darknet框架&quot;&gt;&lt;a href=&quot;#darknet框架&quot;
+        
+      
+    
+    </summary>
+    
+    
+      <category term="深度学习" scheme="http://kidtic.gitee.io/blog/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
+    
+    
+      <category term="深度学习" scheme="http://kidtic.gitee.io/blog/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
+    
+      <category term="目标检测" scheme="http://kidtic.gitee.io/blog/tags/%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>初尝电赛---电子设计大赛省赛篇</title>
+    <link href="http://kidtic.gitee.io/blog/2020/05/14/chu-chang-dian-sai-dian-zi-she-ji-da-sai-sheng-sai-pian/"/>
+    <id>http://kidtic.gitee.io/blog/2020/05/14/chu-chang-dian-sai-dian-zi-she-ji-da-sai-sheng-sai-pian/</id>
+    <published>2020-05-13T18:55:22.000Z</published>
+    <updated>2020-05-14T15:51:11.000Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;这是我大二参加电赛后写的，本来发布在了qq空间上，现在搬运过来了。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h1 id=&quot;初尝电赛—-电子设计大赛省赛篇&quot;&gt;&lt;a href=&quot;#初尝电赛—-电子设计大赛省赛篇&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+    
+      <category term="日记" scheme="http://kidtic.gitee.io/blog/categories/%E6%97%A5%E8%AE%B0/"/>
+    
+    
+      <category term="日记" scheme="http://kidtic.gitee.io/blog/tags/%E6%97%A5%E8%AE%B0/"/>
+    
+      <category term="电赛" scheme="http://kidtic.gitee.io/blog/tags/%E7%94%B5%E8%B5%9B/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>高翔slam14 project 出现double free or corruption (out)问题解决</title>
+    <link href="http://kidtic.gitee.io/blog/2020/05/13/gao-xiang-slam-project-chu-xian-double-free-or-corruption-out-wen-ti-jie-jue/"/>
+    <id>http://kidtic.gitee.io/blog/2020/05/13/gao-xiang-slam-project-chu-xian-double-free-or-corruption-out-wen-ti-jie-jue/</id>
+    <published>2020-05-13T10:33:21.000Z</published>
+    <updated>2020-05-13T03:20:32.000Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;问题&quot;&gt;&lt;a href=&quot;#问题&quot; class=&quot;headerlink&quot; title=&quot;问题&quot;&gt;&lt;/a&gt;问题&lt;/h2&gt;&lt;p&gt;高翔slam project 0.3 在make的时候一切正常。但是在运行的时候会报错：&lt;code&gt;double free or
+        
+      
+    
+    </summary>
+    
+    
+      <category term="技术总结" scheme="http://kidtic.gitee.io/blog/categories/%E6%8A%80%E6%9C%AF%E6%80%BB%E7%BB%93/"/>
+    
+    
+      <category term="g2o c++ 报错修复" scheme="http://kidtic.gitee.io/blog/tags/g2o-c-%E6%8A%A5%E9%94%99%E4%BF%AE%E5%A4%8D/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>我的第一个博客~</title>
+    <link href="http://kidtic.gitee.io/blog/2020/05/13/wo-de-di-yi-ge-bo-ke/"/>
+    <id>http://kidtic.gitee.io/blog/2020/05/13/wo-de-di-yi-ge-bo-ke/</id>
+    <published>2020-05-13T00:44:50.000Z</published>
+    <updated>2020-05-13T12:06:25.000Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;2020-5-13-第一篇博客&quot;&gt;&lt;a href=&quot;#2020-5-13-第一篇博客&quot; class=&quot;headerlink&quot; title=&quot;2020-5-13 第一篇博客&quot;&gt;&lt;/a&gt;2020-5-13
+        
+      
+    
+    </summary>
+    
+    
+    
+      <category term="日记" scheme="http://kidtic.gitee.io/blog/tags/%E6%97%A5%E8%AE%B0/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>404</title>
+    <link href="http://kidtic.gitee.io/blog/2019/07/20/404/"/>
+    <id>http://kidtic.gitee.io/blog/2019/07/20/404/</id>
+    <published>2019-07-19T16:41:10.000Z</published>
+    <updated>2020-05-13T03:24:06.000Z</updated>
+    
+    <summary type="html">
+    
+      你来到了没有知识的荒原 :(
+    
+    </summary>
+    
+    
+    
+  </entry>
+  
+</feed>

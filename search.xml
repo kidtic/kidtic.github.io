@@ -1,0 +1,332 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search> 
+  
+  
+    
+    <entry>
+      <title>【视觉SLAM十四讲-个人笔记】李群与李代数</title>
+      <link href="/blog/2020/06/04/shi-jue-slam-shi-si-jiang-ge-ren-bi-ji-li-qun-yu-li-dai-shu/"/>
+      <url>/blog/2020/06/04/shi-jue-slam-shi-si-jiang-ge-ren-bi-ji-li-qun-yu-li-dai-shu/</url>
+      
+        <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>研究位置与姿态，位置很好说，反正就是xyz，都是线性空间，中学就学过了。但是姿态就很难研究了，姿态的运算不满足加法律，导数也没法求，很多东西难以研究，所以就需要李群与李代数的理论指导了。说白一点，《李群与李代数》学的就是“位姿微积分”。<br>我们为什么要学“位姿微积分”，是因为我们在slam过程中要解决以下问题：<br><strong>什么样的相机位姿最符合当前观测数据，即解最优的R、t。</strong></p><h2 id="群论"><a href="#群论" class="headerlink" title="群论"></a>群论</h2><p>群是一种代数结构。通俗点说，群就是元素集合加上代数运算，使得集合中任意两个元素经过运算后形成的第三个元素仍然在这个集合里面。<br>设$G$是一个非空集合，$\cdot$是它的一个二元运算，如果满足以下条件：<br>(1) 封闭性：若$a,b\in G$ ，则存在唯一确定的$c\in G$ 使得$a\cdot b=c$ ；<br>(2) 结合律成立，即对$G$中任意元素$a,b,c$都有$(a\cdot b)\cdot c=a\cdot (b\cdot c)$ ；<br>(3) 单位元存在：存在$e\in G$ ，对任意$a\in G$，满足$a\cdot e=e\cdot a=a$。$e$称为单位元，也称幺元；<br>(4) 逆元存在：任意$a\in G$，存在$b\in G$，$a\cdot b=b\cdot a=e$（$e$为单位元），则称$a$与$b$互为逆元素，简称逆元。$b$记作$a^{-1}$；<br>则称$G$对$\cdot$构成一个群。<br>通常称$G$上的二元运算$\cdot$为“乘法”，称$a\cdot b$为$a$与$b$的积，并简写为$ab$。<br>若群$G$中元素个数是有限的，则$G$称为有限群。否则称为无限群。有限群的元素个数称为有限群的阶。</p><h2 id="李群"><a href="#李群" class="headerlink" title="李群"></a>李群</h2><p>李群是一种不可交换的连续群，在这里主要讲的是两种常用的群：<strong>特殊正交群</strong>$SO(3)$和<strong>特殊欧氏群</strong>$SE(3)$，在上篇文章中提到过。</p><script type="math/tex; mode=display">SO(n)= \{\mathbf{R}\in\mathbb{R}^{n\times n}|\mathbf{R}\mathbf{R}^T=\mathbf{I},det(\mathbf{R})=1  \}</script><script type="math/tex; mode=display"> SE(3)=\{\mathbf{T}=\begin{pmatrix}\mathbf{R}&\mathbf{t}\\0^T&1 \end{pmatrix}\in\mathbb{R^{4\times4}}| \mathbf{R}\in SO(3),\mathbf{t}\in \mathbb{R^3}  \}</script><p>对应的就是旋转矩阵与变换矩阵<br>需要提一下特殊欧氏群的乘法运算：</p><script type="math/tex; mode=display">\mathbf{T}_1\mathbf{T}_2=\begin{bmatrix}\mathbf{R}_1&\mathbf{t}_1\\0^T&1\end{bmatrix}\begin{bmatrix}\mathbf{R}_2&\mathbf{t}_2\\0^T&1\end{bmatrix}=\begin{bmatrix}\mathbf{R}_1\mathbf{R}_2& \mathbf{R}_1\mathbf{t}_2+\mathbf{t}_1\\0^T&1\end{bmatrix}\in SE(3)</script><h2 id="李代数"><a href="#李代数" class="headerlink" title="李代数"></a>李代数</h2><p>不论$SO(3)$还是$SE(3)$，都伴随着一个相应的李代数。李代数是定义在某个<label style="color:blue">数域</label>$\mathbb{F}$上的<label style="color:blue">集合</label>$\mathbb{V}$，同时定义了一个称为李括号$[⋅,⋅]$的双目运算符。我们把蓝色字体部分称为李代数的三个要素。同李群类似，对所有的$\mathbf{X}, \mathbf{Y}, \mathbf{Z} \in \mathbb{V}$和$a, b \in \mathbb{F}$，李代数也必须满足四个性质：  </p><ol><li>封闭性：$[\mathbf{X}, \mathbf{Y}] \in \mathbb{V}$</li><li>双线性：$[a\mathbf{X} + b\mathbf{Y}, \mathbf{Z}] = a[\mathbf{X}, \mathbf{Z}] + b[\mathbf{Y}, \mathbf{Z}] \qquad and \qquad [ \mathbf{Z}, a\mathbf{X} + b\mathbf{Y}] = a[\mathbf{Z}, \mathbf{X}] + b[\mathbf{Z}, \mathbf{Y}]$</li><li>自反性：$[\mathbf{X}, \mathbf{X}] = \mathbf{0}$</li><li>雅可比恒等：$[\mathbf{X}, [\mathbf{Y}, \mathbf{Z}]] + [\mathbf{Y}, [\mathbf{Z}, \mathbf{X}]] + [\mathbf{Z}, [\mathbf{X}, \mathbf{Y}]] = \mathbf{0}$  </li></ol><p>举例：三维向量$\mathbb{R}^3$上定义的叉积$\times$是一种李括号，因此$g=(\mathbb{R}^3,\mathbb{R},\times)$构成了一种李代数。</p><h3 id="李代数-mathfrak-so-3"><a href="#李代数-mathfrak-so-3" class="headerlink" title="李代数$\mathfrak{so}(3)$"></a>李代数$\mathfrak{so}(3)$</h3><p>在SLAM14 4.1.2的内容中，我们也根据微分方程定义了一个反对称矩阵：</p><script type="math/tex; mode=display">\phi(t)^\land=\mathbf{\dot{R}}(t)\mathbf{R}(t)^T</script><p>我们可以解出这个微分方程：在$t_0$附近时，设$\phi$保持常数$\phi(t_0)=\phi_0$,有：</p><script type="math/tex; mode=display">\mathbf{R}(t)=exp(\phi_0^\land t)</script><p>我们可以看到这个$\phi^\land$的特殊地位，可以由R直接通过指数关系得出，且与导数也有联系。所以我们觉得试试这个$\phi^\land$作为$SO(3)$的李代数  </p><ul><li>集合：$\mathfrak{so}(3) =  { \mathbf{\Phi} = \boldsymbol{\phi}^{\wedge} \in \mathbb{R}^{3 \times 3} | \boldsymbol{\phi} \in \mathbb{R}^3}$</li><li>李括号：$[\mathbf{\Phi}_1, \mathbf{\Phi}_2] = \mathbf{\Phi}_1\mathbf{\Phi}_2 - \mathbf{\Phi}_2\mathbf{\Phi}_1 \in \mathbb{R}^{3 \times 3}$<br>其中，$\mathbf{\Phi}$是一个反对称矩阵<script type="math/tex; mode=display">\mathbf{\Phi} = \boldsymbol{\phi}^{\wedge} = \begin{bmatrix}   0  & -\boldsymbol{\phi}_3  & \boldsymbol{\phi}_2 \\\boldsymbol{\phi}_3 & 0 & -\boldsymbol{\phi}_1 \\-\boldsymbol{\phi}_2 & \boldsymbol{\phi}_1 & 0 \end{bmatrix} \in \mathbb{R}^{3 \times 3}, \quad \boldsymbol{\phi} \in \mathbb{R}^3</script>书上证明了这个定义是符合李代数标准的<br>李代数$\mathfrak{so}(3)$与$SO(3)$的关系由指数映射给定：<script type="math/tex; mode=display">\mathbf{R} = \exp(\boldsymbol{\phi}^{\wedge}) =  \sum_{0}^{\infty}{\frac{1}{n!} (\boldsymbol{\phi}^{\wedge})^n}</script></li></ul><p>精髓来了！稍微推导一下上式，我们记$\boldsymbol{\phi} = \phi \mathbf{a}$，其中，$\phi = | \boldsymbol{\phi} |$表示$\boldsymbol{\phi}$的模长，而$\mathbf{a} = \frac{\boldsymbol{\phi}}{\phi}$表示与$\boldsymbol{\phi}$方向一致的单位向量。这样，指数映射就可表达为：</p><script type="math/tex; mode=display">\mathbf{R} =  \cos \phi \mathbf{I} + (1 - \cos \phi) \mathbf{a} \mathbf{a}^T + \sin \phi \mathbf{a}^{\wedge}</script><p>这个就是罗德里格斯公式，因此从数学意义上来说：李代数$\phi$表征的就是一个旋转向量，$\phi$的模长表达了旋转的角度，$\phi$的方向表达了旋转轴的方向。这给后面的求导提供了指导思想与方便。</p><h3 id="李代数-mathfrak-se-3"><a href="#李代数-mathfrak-se-3" class="headerlink" title="李代数$\mathfrak{se}(3)$"></a>李代数$\mathfrak{se}(3)$</h3><ul><li>集合：$\mathfrak{se}(3) =  { \mathbf{\Xi} = \boldsymbol{\xi}^{\wedge} \in \mathbb{R}^{4 \times 4} | \boldsymbol{\xi} \in \mathbb{R}^6}$</li><li>李括号：$[\mathbf{\Xi}_1, \mathbf{\Xi}_2] = \mathbf{\Xi}_1\mathbf{\Xi}_2 - \mathbf{\Xi}_2\mathbf{\Xi}_1 \in \mathbb{R}^{4 \times 4}$<br>其中，<script type="math/tex; mode=display">\mathbf{\Xi} = \boldsymbol{\xi}^{\wedge} =  \begin{bmatrix}   \boldsymbol{\rho} \\ \boldsymbol{\phi} \end{bmatrix} ^{\wedge} = \begin{bmatrix}   \boldsymbol{\phi}^{\wedge} & \boldsymbol{\rho} \\ \mathbf{0}^T & 0 \end{bmatrix}  \in \mathbb{R}^{4 \times 4},  \quad \boldsymbol{\rho}, \boldsymbol{\phi} \in \mathbb{R}^3</script></li></ul><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>其实饶了一大圈就是发现了，旋转向量与旋转矩阵之间的指数关系。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 学习笔记 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 视觉SLAM </tag>
+            
+            <tag> 机器视觉 </tag>
+            
+            <tag> 三维视觉 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>【算法笔记】买卖股票问题--DP/贪心算法</title>
+      <link href="/blog/2020/05/24/suan-fa-bi-ji-mai-mai-gu-piao-wen-ti-dp-tan-xin-suan-fa/"/>
+      <url>/blog/2020/05/24/suan-fa-bi-ji-mai-mai-gu-piao-wen-ti-dp-tan-xin-suan-fa/</url>
+      
+        <content type="html"><![CDATA[<p>给定一个数组，它的第 i 个元素是一支给定的股票在第 i 天的价格。<br>设计一个算法来计算你所能获取的最大利润。你最多可以完成 k 笔交易。<br>注意: 你不能同时参与多笔交易（你必须在再次购买前出售掉之前的股票）。 </p><p>示例 1:</p><pre><code>输入: p=[2,4,1], k = 2输出: 2解释: 在第 1 天 (股票价格 = 2) 的时候买入，在第 2 天 (股票价格 = 4) 的时候卖出，这笔交易所能获得利润 = 4-2 = 2 。</code></pre><p>示例 2:</p><pre><code>输入: p=[3,2,6,5,0,3], k = 2输出: 7解释: 在第 2 天 (股票价格 = 2) 的时候买入，在第 3 天 (股票价格 = 6) 的时候卖出, 这笔交易所能获得利润 = 6-2 = 4 。     随后，在第 5 天 (股票价格 = 0) 的时候买入，在第 6 天 (股票价格 = 3) 的时候卖出, 这笔交易所能获得利润 = 3-0 = 3 。</code></pre><h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h2><p>当题目中$k$大于表格数量的$\frac{1}{2}$的时候，就相当于无限制了，这个时候采用贪心算法更好。否则就得用动态规划。</p><h3 id="动态规划"><a href="#动态规划" class="headerlink" title="动态规划"></a>动态规划</h3><p>根据上篇介绍动态规划设计的方法，$dp(p,k)$应该代表着当数组为p时候最多完成k笔交易，所能获得的最大利润。然后找这个问题中股民遇到的选择情景，股民每一天都可以选择买与不买，卖与不卖，通过这些选择来使自己利益最大化，需要注意的是买与不买是在自己不持股票的状态下，卖与不卖是在自己持股的状态下。所以每一天的两种状态都在dp范围内。</p><p>假设股民在i-1天之前在两种情况下都已经是做出了自己最优的选择了，那么在第i天我们应该如何做出抉择呢？<br>我们假设$dp(i,j)$代表包括第i天的前i天的股票给最大j笔交易机会，且当前不持股情况下，最大利润能是多少。很明显这和原问题是同样的结构。  这里包含了第i天的选择操作。<br>我们再假设$hold(i,j)$代表包括第i天的前i天的股票给最大j笔交易机会，且当前持股情况下，你目前的最大金钱数能是多少。这里和上面的区别在于，在这之前你是花了前买了一个股票的，至于是第i天买的还是更早买的，无所谓了。  </p><p>我们要让股民利益最大化，在第i天要做出选择：</p><ul><li>在当天不持股的情况下，说明要么他本来就不持股，要么说明他今天卖掉了自己的股票,消耗了一次交易机会，我们选择一个能让他利益最大的情况<script type="math/tex; mode=display">dp(i,j)=max(dp(i-1,j),hold(i-1,j-1)+p[i])</script></li><li>在当天持股的情况下，说明要么他本来就持股，要么说明他今天买了股票，我们选择一个能让他利益最大的情况<script type="math/tex; mode=display">hold(i,j)=max(hold(i-1,j),dp(i-1,j)-p[i])</script></li></ul><p>写出表达式后我们要计算初始值：</p><script type="math/tex; mode=display">dp(0,j)=0,j=0,1,2...k\\hold(0,j)=-p[0],j=0,1,2...k\\dp(i,0)=0,i=0,1,2...p.size-1\\</script><h3 id="贪心算法"><a href="#贪心算法" class="headerlink" title="贪心算法"></a>贪心算法</h3><p>贪心比dp要容易，当$k$大于表格数量的$\frac{1}{2}$的时候，我们认为是无限制买卖。所以只要是涨价，我们都买。把原数列差分，然后把大于0的都加起来就是。</p><h3 id="c-代码"><a href="#c-代码" class="headerlink" title="c++代码"></a>c++代码</h3><pre><code>class Solution {public:    int maxProfit(int k, vector&lt;int&gt;&amp; p) {        vector&lt;vector&lt;int&gt;&gt; dp,hold;        if(p.size()&#x3D;&#x3D;0)return 0;        if(k&gt;p.size()&#x2F;2){            return greedy(p);        }        dp&#x3D;vector&lt;vector&lt;int&gt;&gt;(p.size(),vector&lt;int&gt;(k+1,0));        hold&#x3D;vector&lt;vector&lt;int&gt;&gt;(p.size(),vector&lt;int&gt;(k+1,0));        for(int i&#x3D;0;i&lt;&#x3D;k;i++){            hold[0][i]&#x3D;-p[0];        }        for(int i&#x3D;1;i &lt; p.size();i++){            hold[i][0]&#x3D;max(hold[i-1][0],-p[i]);        }                 for(int i&#x3D;1;i&lt;p.size();i++){            for(int j&#x3D;1;j&lt;&#x3D;k;j++){                dp[i][j]&#x3D;max(dp[i-1][j],hold[i-1][j-1]+p[i]);                 hold[i][j]&#x3D;max(hold[i-1][j],dp[i-1][j]-p[i]);            }        }        return dp[p.size()-1][k];    }    int greedy(vector&lt;int&gt;&amp; p){        int ans&#x3D;0;        for(int i&#x3D;0;i&lt;p.size()-1;i++){            ans+&#x3D;max(0,p[i+1]-p[i]);        }        return ans;    }};</code></pre>]]></content>
+      
+      
+      <categories>
+          
+          <category> 学习笔记 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 算法 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>【算法笔记】动态规划</title>
+      <link href="/blog/2020/05/16/suan-fa-bi-ji-dong-tai-gui-hua/"/>
+      <url>/blog/2020/05/16/suan-fa-bi-ji-dong-tai-gui-hua/</url>
+      
+        <content type="html"><![CDATA[<h2 id="什么是动态规划"><a href="#什么是动态规划" class="headerlink" title="什么是动态规划"></a>什么是动态规划</h2><p><strong>动态规划</strong>（dynamic programming）是一种通过求解组合子问题的方法来递归的求解原问题的方法，与分治法极为相似，但是其特点在于，在递归的时候会大量的遇到相同的子问题。我们会记住该子问题的结果，避免重复求解。<br>动态规划大量的用于解决最优化问题中，当然某些不是最优化的问题也可以用分治法解决，比如爬梯子问题、背包问题。凡是能将问题刻画为若干子问题组合的题目，都可以用动态规划来求解。</p><h2 id="如何来设计动态规划算法"><a href="#如何来设计动态规划算法" class="headerlink" title="如何来设计动态规划算法"></a>如何来设计动态规划算法</h2><p>我们以一个简单的例子来说明：<strong>打家劫舍</strong><br>你是一个专业的小偷，计划偷窃沿街的房屋。每间房内都藏有一定的现金，影响你偷窃的唯一制约因素就是相邻的房屋装有相互连通的防盗系统，如果两间相邻的房屋在同一晚上被小偷闯入，系统会自动报警。</p><p>给定一个代表每个房屋存放金额的非负整数数组，计算你在不触动警报装置的情况下，能够偷窃到的最高金额。</p><p>示例 1:</p><pre><code>输入: [1,2,3,1]输出: 4解释: 偷窃 1 号房屋 (金额 = 1) ，然后偷窃 3 号房屋 (金额 = 3)。     偷窃到的最高金额 = 1 + 3 = 4 。</code></pre><p>示例 2:</p><pre><code>输入: [2,7,9,3,1]输出: 12解释: 偷窃 1 号房屋 (金额 = 2), 偷窃 3 号房屋 (金额 = 9)，接着偷窃 5 号房屋 (金额 = 1)。     偷窃到的最高金额 = 2 + 9 + 1 = 12 。</code></pre><h3 id="1-找子问题"><a href="#1-找子问题" class="headerlink" title="1 找子问题"></a>1 找子问题</h3><p>对于最优化问题，找子问题有一个关键的要素，就是一定要有选择，通常如何选择用max或者min。而选择的项目就是一群与主问题结构相似且规模更小的子问题。且子问题通常要被描述成一个或多个输入，单个数值输出的形式：</p><script type="math/tex; mode=display">y=dp(x_1,x_2,...),其中y\in\mathbb{R}</script><p>所以对于本问题，我们可以根据原问题直接写出子问题的输入输出结构  </p><pre><code>    输入：整数数组s      输出：能剽窃到的最高金额y    </code></pre><p>然后就是处理dp函数的实现，dp函数内部一定要实现如何分割子问题，就是将s分割成一个或者多个比s小的序列，对于最优问题如何去找这个分割点，就在于如何去做选择。小偷站在$s[0]$家门口，需要做出选择偷还是不偷，如果选择偷的话，那他就不能选择偷下一家，如果不偷那他就可以偷下一家，小偷需要权衡这两种情况获得的利益y，才能做出选择，所以可以分成两个dp问题。</p><ol><li>偷s[0]家的，拿到了钱，那么不能偷s[1]家的，所以在s[2]家即以后组成新的数组，又考虑同样的选择问题。</li><li>不偷s[0]家的，直接来到下一家，所以在s[1]家即以后组成新的数组，又考虑同样的选择问题。  </li></ol><h3 id="2-递归的定义最优解"><a href="#2-递归的定义最优解" class="headerlink" title="2 递归的定义最优解"></a>2 递归的定义最优解</h3><p>找到子问题就好办了，我们用公式写出dp函数，这里注意dp函数就代表小偷的盈利。$s_i$代表数组s中第i个元素之后的子数组。$s_0$代表整个数组。s[k]代表第k个元素的数值。s最后一个元素为s[m]</p><script type="math/tex; mode=display">dp(s_i)=max(\overbrace{dp(s_{i+1})}^{不偷},\overbrace{s[i]+dp(s_{i+2})}^偷)</script><p>养成好习惯，递归公式注意初始值。</p><script type="math/tex; mode=display">dp(s_m)=s[m]\\dp(s_{m+1})=0</script><h3 id="3-自底向上计算"><a href="#3-自底向上计算" class="headerlink" title="3 自底向上计算"></a>3 自底向上计算</h3><p>有了递归公式，我们虽然可以直接用嵌套函数来写，不过堆栈扛不住。像斐波那契数列那样，我们从初始值开始往上算，就不用浪费堆栈来调函数了。上面我们看出，显然这个初始值不是很好看，所以我们换个表述方法，小偷从最后那个家开始往前偷，效果是一样：</p><script type="math/tex; mode=display">    dp(s_i)=max(\overbrace{dp(s_{i-1})}^{不偷},\overbrace{s[i]+dp(s_{i-2})}^偷)\\    dp(s_0)=s[0]\\    dp(\varnothing)=0 或者说dp(s_{-1})=0</script><p>dp输入本来是个字符串，但是给我的有用信息只有一个i，所以直接构成一个一维数组。（如果给我的信息有n个维度，则需要申请n维数组）</p><script type="math/tex; mode=display">    dp(i)=max(\overbrace{dp(i-1)}^{不偷},\overbrace{s[i]+dp(i-2)}^偷)\\    dp(0)=s[0]\\    dp(1)=max(s[0],s[1])</script><p>依次计算$dp(2),dp(3),…,dp(m)$<br>这里值得注意的是由于dp[-1]不存在，所以我用dp[1]来充当一个初始值了，在某些时候，尤其是二维数组的时候，为了优化计算，可以考虑dp[-1]存在的情况，就是数组整体右移，将dp[-1]的情况用dp[0]代替。以空间换时间。</p><h3 id="4-存储最优解"><a href="#4-存储最优解" class="headerlink" title="4 存储最优解"></a>4 存储最优解</h3><p>如果题目有要求需要存储最优解。在dp递归的时候，可以顺便记录下所有的选择，最后可以一次串起来。</p><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>这里只举例了一维的情况，当dp输入包含两个维度的信息的时候，则需要二维dp数组来计算。可以通过画矩阵图，搞清楚dp[i,j]的依赖关系，然后再设计计算顺序。如果是多维空间的话，数组量将特别大，这个时候会可以根据这种依赖关系来降低空间复杂度。有时候这个dp点只会和邻近的dp点有关系，不会和历史dp点有关系，这时候历史dp点就可以舍弃不要。<br>dp难点在于找子问题，这也是需要训练的地方，可以针对两种题来做。</p><ol><li>对于最优化问题，就是在于<strong>选择不同的情况</strong>，在题目中找出需要做出选择情况的时候，这里”情况“一般就是子问题。</li><li>对于非优化问题，一般就是那种排列组合题，其实和上面思想一样，只不过$max(dp_1,dp_2,…)$变成了$dp_1+dp_2+…$或者$dp_1\times dp_2 \times…$。也是要分“情况”，只不过这里不需要做选择了。</li></ol><h2 id="写在最后"><a href="#写在最后" class="headerlink" title="写在最后"></a>写在最后</h2><p>本人也处于学习阶段，奈何dp问题怎么找子问题确实难，所以必须给自己做个总结，不然稍微变通一下就不会了。大神直接忽略。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 学习笔记 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 算法 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>【视觉SLAM十四讲-个人笔记】三维空间刚体运动</title>
+      <link href="/blog/2020/05/15/shi-jue-slam-shi-si-jiang-ge-ren-bi-ji-san-wei-kong-jian-gang-ti-yun-dong/"/>
+      <url>/blog/2020/05/15/shi-jue-slam-shi-si-jiang-ge-ren-bi-ji-san-wei-kong-jian-gang-ti-yun-dong/</url>
+      
+        <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>由于三维空间刚体运动比较重要，后面有可能还会专门做一次总结，结合IMU位姿估计一起吧。本章内容还是好理解的所以不做过多的讨论。</p><h2 id="旋转矩阵"><a href="#旋转矩阵" class="headerlink" title="旋转矩阵"></a>旋转矩阵</h2><p>旋转矩阵是一个行列式为1的正交矩阵，反之亦然，所以对于所有旋转矩阵，我们把他们放在一个集合里：</p><script type="math/tex; mode=display">SO(n)= \{R\in\mathbb{R}^{n\times n}|RR^T=I,det(R)=1  \}</script><p>我们称这是一个特殊正交群，表示所有旋转矩阵组成的群，n=3表示3维。这里提前了解了一下群论，再后期会仔细的进行讲解。  </p><blockquote><ul><li>性质:<br>由于是正交阵，所以对于旋转矩阵R有：$R^{-1}=R^T$,可以减少大量的计算量</li></ul></blockquote><h2 id="变换矩阵"><a href="#变换矩阵" class="headerlink" title="变换矩阵"></a>变换矩阵</h2><p>变换矩阵也可以组成一个群：</p><script type="math/tex; mode=display"> SE(3)=\{T=\begin{pmatrix}R&t\\0^T&1 \end{pmatrix}\in\mathbb{R^{4\times4}}| R\in SO(3),t\in \mathbb{R^3}  \}</script><p>变换矩阵有着与旋转矩阵相似的性质：</p><script type="math/tex; mode=display">T^{-1}=\begin{bmatrix}R^T&-R^Tt\\0^T&1\end{bmatrix}</script><h2 id="旋转向量与Rodrigues-公式"><a href="#旋转向量与Rodrigues-公式" class="headerlink" title="旋转向量与Rodrigues 公式"></a>旋转向量与Rodrigues 公式</h2><p>任意旋转都可以由一个旋转轴与一个旋转角度来描述：$\theta\vec{n}$<br>旋转向量方便描述，但是不方便计算，旋转矩阵就便于计算，任何一个向量左乘上旋转矩阵，都表示旋转后的向量。然后旋转向量和旋转矩阵可以通过Rodrigues 公式来转换：<br>旋转向量$\to$旋转矩阵</p><script type="math/tex; mode=display">    R=cos\theta I+(1-cos\theta)\vec{n}\vec{n}^T+sin\theta [\vec{n}]_\times</script><p>其中$[\vec{n}]<em>\times$在视觉SLAM十四讲书中对应$\vec{n}^\land$,不过$[ ]</em>\times$符号用的比较多。<br>旋转矩阵$\to$旋转向量</p><script type="math/tex; mode=display">\theta=arccos(\frac{tr(R)-1}{2})\\R\vec{n}=\vec{n}</script><p>$tr(R)$是矩阵的迹，对角线之和，在得到$\theta$后再解方程$R\vec{n}=\vec{n}$就好了。</p><h2 id="欧拉角"><a href="#欧拉角" class="headerlink" title="欧拉角"></a>欧拉角</h2><p>直接转步，这个还是要看图看视频好理解。<br><a href="https://www.jianshu.com/p/21ab3e1d3422" target="_blank" rel="noopener">https://www.jianshu.com/p/21ab3e1d3422</a><br>注意欧拉角的死锁问题</p><h2 id="四元数"><a href="#四元数" class="headerlink" title="四元数"></a>四元数</h2><p>这个就是为了解决死锁问题出来的，而且要比旋转向量方便计算。比旋转矩阵规模要小。<br>假设某个旋转矩阵是绕单位向量$\vec{n}=(n_x,n_y,n_z)^T$进行了角度为$\theta$的旋转，则四元数为：</p><script type="math/tex; mode=display">q=(cos\frac{\theta}{2},n_xsin\frac{\theta}{2},n_ysin\frac{\theta}{2},n_zsin\frac{\theta}{2})</script><p>用四元数表示旋转,若$p=(0,x,y,z)$,$p^\prime$是经过旋转q得到的，那么</p><script type="math/tex; mode=display">p^\prime=qpq^{-1}</script>]]></content>
+      
+      
+      <categories>
+          
+          <category> 学习笔记 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 视觉SLAM </tag>
+            
+            <tag> 机器视觉 </tag>
+            
+            <tag> 三维视觉 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>【视觉SLAM十四讲-个人笔记】初识SLAM</title>
+      <link href="/blog/2020/05/14/shi-jue-slam-shi-si-jiang-ge-ren-bi-ji-chu-shi-slam/"/>
+      <url>/blog/2020/05/14/shi-jue-slam-shi-si-jiang-ge-ren-bi-ji-chu-shi-slam/</url>
+      
+        <content type="html"><![CDATA[<p>视觉SLAM十四讲这本书应该算是非常好理解的一本书了，而且讲的十分到位，不仅可以学习视觉SLAM的知识，对于一些工程上的设计也对我有启发。这里不会讲解视觉SLAM的内容，只是进行一些小总结与提炼，以及读后感。</p><h2 id="经典视觉SLAM框架"><a href="#经典视觉SLAM框架" class="headerlink" title="经典视觉SLAM框架"></a>经典视觉SLAM框架</h2><p><img src="https://pic1.zhimg.com/80/v2-0d87af326d4e6fca1e3259716185c2a4_1440w.png" alt=""></p><h2 id="SLAM数学模型"><a href="#SLAM数学模型" class="headerlink" title="SLAM数学模型"></a>SLAM数学模型</h2><script type="math/tex; mode=display">\begin{cases}x_k=f(x_{k-1},u_k,\omega_k)\\z_{k,j}=h(y_j,x_k,v_{k,j})\end{cases}</script><p>其中：$x$代表位置，$u$代表运动传感器的数据或者控制器的输入参数，$z$是一个观测数据，$y$是路标，$\omega,v$是噪声，</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 学习笔记 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 视觉SLAM </tag>
+            
+            <tag> 机器视觉 </tag>
+            
+            <tag> 三维视觉 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>deepin-wine 2.18-22 最新版本QQ微信安装以及bug</title>
+      <link href="/blog/2020/05/14/deepin-wine-2-18-22-zui-xin-ban-ben-qq-wei-xin-an-zhuang-yi-ji-bug/"/>
+      <url>/blog/2020/05/14/deepin-wine-2-18-22-zui-xin-ban-ben-qq-wei-xin-an-zhuang-yi-ji-bug/</url>
+      
+        <content type="html"><![CDATA[<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>原版本不能用了，这里给出一个sh脚本直接安装最新版本的deepin-wine</p><pre class=" language-lang-shell"><code class="language-lang-shell">#!/bin/bashmkdir /tmp/deepintempcd /tmp/deepintempwget http://mirrors.aliyun.com/deepin/pool/non-free/d/deepin-wine/deepin-wine_2.18-22~rc0_all.debwget http://mirrors.aliyun.com/deepin/pool/non-free/d/deepin-wine/deepin-wine32_2.18-22~rc0_i386.debwget http://mirrors.aliyun.com/deepin/pool/non-free/d/deepin-wine/deepin-wine32-preloader_2.18-22~rc0_i386.debwget http://mirrors.aliyun.com/deepin/pool/non-free/d/deepin-wine-helper/deepin-wine-helper_1.2deepin8_i386.debwget http://mirrors.aliyun.com/deepin/pool/non-free/d/deepin-wine-plugin/deepin-wine-plugin_1.0deepin2_amd64.debwget http://mirrors.aliyun.com/deepin/pool/non-free/d/deepin-wine-plugin-virtual/deepin-wine-plugin-virtual_1.0deepin3_all.debwget http://mirrors.aliyun.com/deepin/pool/non-free/d/deepin-wine-uninstaller/deepin-wine-uninstaller_0.1deepin2_i386.debwget http://mirrors.aliyun.com/deepin/pool/non-free/u/udis86/udis86_1.72-2_i386.debwget http://mirrors.aliyun.com/deepin/pool/non-free/d/deepin-wine/deepin-fonts-wine_2.18-22~rc0_all.debwget http://mirrors.aliyun.com/deepin/pool/non-free/d/deepin-wine/deepin-libwine_2.18-22~rc0_i386.debwget https://mirrors.aliyun.com/deepin/pool/main/libj/libjpeg-turbo/libjpeg62-turbo_1.5.1-2_amd64.debwget https://mirrors.aliyun.com/deepin/pool/main/libj/libjpeg-turbo/libjpeg62-turbo_1.5.1-2_i386.debecho '准备添加32位支持'sudo dpkg --add-architecture i386echo '添加成功，准备刷新apt缓存信息...'sudo apt updateecho '即将开始安装...'sudo dpkg -i *.debecho '安装完成，正在自动安装依赖...'sudo apt install -fyrm -vfr /tmp/deepintemp</code></pre><p>当然如果又更新了可以直接参考<a href="http://mirrors.aliyun.com/deepin/pool/non-free/d/deepin-wine/" target="_blank" rel="noopener">镜像库</a><br>同时给出github：<a href="https://github.com/wszqkzqk/deepin-wine-ubuntu" target="_blank" rel="noopener">https://github.com/wszqkzqk/deepin-wine-ubuntu</a></p><h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>1.高分辨率dip调节，以及其他的wine设置调节选项</p><pre class=" language-lang-shell"><code class="language-lang-shell">env WINEPREFIX="$HOME/.deepinwine/Deepin-QQ" deepin-wine winecfg</code></pre><hr><p>2.微信黑框问题：在微信中通过打字弹出表情，黑框可以自动消失</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 技术总结 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Linux </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>【Linux】自启动程序</title>
+      <link href="/blog/2020/05/14/linux-zi-qi-dong-cheng-xu/"/>
+      <url>/blog/2020/05/14/linux-zi-qi-dong-cheng-xu/</url>
+      
+        <content type="html"><![CDATA[<h2 id="step-1"><a href="#step-1" class="headerlink" title="step.1"></a>step.1</h2><p>编写启动shell脚本：zzqapp.sh</p><pre class=" language-lang-bash"><code class="language-lang-bash"> #!/bin/sh/home/pi/myprogram/pca9685/robotmove</code></pre><p>shell脚本假设放在 /home/pi/myprogram/pca9685/中，shell脚本的目的是启动robotmove程序。之后更改zzqapp.sh的权限</p><pre class=" language-lang-bash"><code class="language-lang-bash"> sudo chmod +x zzqapp.sh</code></pre><h2 id="step-2"><a href="#step-2" class="headerlink" title="step.2"></a>step.2</h2><p>编辑“/etc/rc.local”，把启动程序的shell命令输出进去即可（要输入命令的全路径）。</p><blockquote><p>sudo nano /etc/rc.local</p></blockquote><p>然后在最后一行exit 0上面添加代码：</p><pre class=" language-lang-bash"><code class="language-lang-bash">cd /home/pi/myprogram/pca9685./zzqapp.sh</code></pre><h2 id="step-3"><a href="#step-3" class="headerlink" title="step.3"></a>step.3</h2><p>reboot</p><h2 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h2><p>注意：shell文件不能用 ./ 来执行程序</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 技术总结 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Linux </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>【Linux】C多线程编程：互斥锁</title>
+      <link href="/blog/2020/05/14/linux-c-duo-xian-cheng-bian-cheng-hu-chi-suo/"/>
+      <url>/blog/2020/05/14/linux-c-duo-xian-cheng-bian-cheng-hu-chi-suo/</url>
+      
+        <content type="html"><![CDATA[<p>互斥量从本质上说就是一把锁, 提供对共享资源的保护访问。其基本原理就是在调用<font color=red>pthread_mutex_lock</font>函数后 互斥锁为上锁状态，在其他线程里如果出现了<font color=red>pthread_mutex_lock</font>函数后，会直接阻塞，直到互斥锁解锁。</p><h2 id="1-初始化"><a href="#1-初始化" class="headerlink" title="1. 初始化"></a>1. 初始化</h2><p>在Linux下, 线程的互斥量数据类型是<code>pthread_mutex_t</code>. 在使用前, 要对它进行初始化:</p><ul><li>对于静态分配的互斥量, 可以把它设置为<code>PTHREAD_MUTEX_INITIALIZER</code>, 或者调用pthread_mutex_init.</li><li>对于动态分配的互斥量, 在申请内存(malloc)之后, 通过<code>pthread_mutex_init</code>进行初始化, 并且在释放内存(free)前需要调用<code>pthread_mutex_destroy</code>.</li></ul><p>原型:</p><pre class=" language-lang-cpp"><code class="language-lang-cpp">　　int pthread_mutex_init(pthread_mutex_t *restrict mutex, const pthread_mutexattr_t *restric attr);　　int pthread_mutex_destroy(pthread_mutex_t *mutex);</code></pre><p>头文件:</p><ul><li><p>返回值: 成功则返回0, 出错则返回错误编号.</p></li><li><p>说明: 如果使用默认的属性初始化互斥量, 只需把attr设为NULL. 其他值在以后讲解。</p></li></ul><h2 id="2-互斥操作"><a href="#2-互斥操作" class="headerlink" title="2. 互斥操作"></a>2. 互斥操作</h2><p>对共享资源的访问, 要对互斥量进行加锁, 如果互斥量已经上了锁, 调用线程会阻塞, 直到互斥量被解锁. 在完成了对共享资源的访问后, 要对互斥量进行解锁。</p><p>首先说一下加锁函数:</p><pre class=" language-lang-cpp"><code class="language-lang-cpp">　　int pthread_mutex_lock(pthread_mutex_t *mutex);　　int pthread_mutex_trylock(pthread_mutex_t *mutex);</code></pre><ul><li>返回值: 成功则返回0, 出错则返回错误编号.</li><li>说明: 具体说一下trylock函数, 这个函数是非阻塞调用模式, 也就是说, 如果互斥量没被锁住, trylock函数将把互斥量加锁, 并获得对共享资源的访问权限; 如果互斥量被锁住了, trylock函数将不会阻塞等待而直接返回EBUSY, 表示共享资源处于忙状态。</li></ul><p>再说一下解所函数:</p><pre class=" language-lang-cpp"><code class="language-lang-cpp">　　 int pthread_mutex_unlock(pthread_mutex_t *mutex);</code></pre><ul><li>返回值: 成功则返回0, 出错则返回错误编号.</li></ul><h2 id="3-死锁"><a href="#3-死锁" class="headerlink" title="3. 死锁"></a>3. 死锁</h2><p>死锁主要发生在有多个依赖锁存在时, 会在一个线程试图以与另一个线程相反顺序锁住互斥量时发生. 如何避免死锁是使用互斥量应该格外注意的东西。总体来讲, 有几个不成文的基本原则:</p><ul><li>对共享资源操作前一定要获得锁。</li><li>完成操作以后一定要释放锁。</li><li>尽量短时间地占用锁。</li><li>如果有多锁, 如获得顺序是ABC连环扣, 释放顺序也应该是ABC。</li><li>线程错误返回时应该释放它所获得的锁。</li></ul><hr><p>下面给个测试小程序进一步了解互斥，mutex互斥信号量锁住的不是一个变量，而是阻塞住一段程序。如果对一个mutex变量testlock, 执行了第一次pthread_mutex_lock(testlock)之后，在unlock(testlock)之前的这段时间内，如果有其他线程也执行到了pthread_mutex_lock(testlock)，这个线程就会阻塞住，直到之前的线程unlock之后才能执行，由此，实现同步，也就达到保护临界区资源的目的。</p><pre class=" language-lang-cpp"><code class="language-lang-cpp">#include<stdio.h>#include<pthread.h>static pthread_mutex_t testlock;pthread_t test_thread;void *test(){    pthread_mutex_lock(&testlock);    printf("thread Test() \n");    pthread_mutex_unlock(&testlock);}int main(){    pthread_mutex_init(&testlock, NULL);    pthread_mutex_lock(&testlock);     printf("Main lock \n");    pthread_create(&test_thread, NULL, test, NULL);    sleep(1); //更加明显的观察到是否执行了创建线程的互斥锁    printf("Main unlock \n");    pthread_mutex_unlock(&testlock);     sleep(1);    pthread_join(test_thread,NULL);     pthread_mutex_destroy(&testlock);     return 0;}</code></pre><pre class=" language-lang-bash"><code class="language-lang-bash">makegcc -D_REENTRANT -lpthread -o test test.c</code></pre><p>结果：</p><p>Main lock</p><p>Main unlock</p><p>thread Test()</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 技术总结 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Linux </tag>
+            
+            <tag> c++ </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>YOLO3网络配置与训练</title>
+      <link href="/blog/2020/05/14/yolo3-wang-luo-pei-zhi-yu-xun-lian/"/>
+      <url>/blog/2020/05/14/yolo3-wang-luo-pei-zhi-yu-xun-lian/</url>
+      
+        <content type="html"><![CDATA[<p>环境：</p><ul><li>pop_os(ubuntu18)</li><li>cuda9</li><li>opencv3.2</li><li>GTX1070</li></ul><h2 id="darknet框架"><a href="#darknet框架" class="headerlink" title="darknet框架"></a>darknet框架</h2><p>官方网站：<a href="https://pjreddie.com/darknet/" target="_blank" rel="noopener">https://pjreddie.com/darknet/</a></p><p>编译框架可能要根据自己的需要更改Makefile（我就根据我自己的情况更改了链接路径，因为我的opencv和cuda安装路径有点不一样）</p><h2 id="yolov3-voc网络训练"><a href="#yolov3-voc网络训练" class="headerlink" title="yolov3-voc网络训练"></a>yolov3-voc网络训练</h2><p>参考博客：<a href="https://blog.csdn.net/just_sort/article/details/81389571" target="_blank" rel="noopener">https://blog.csdn.net/just_sort/article/details/81389571</a></p><p>关于yolov3-voc.cfg的配置:<a href="https://blog.csdn.net/lilai619/article/details/79695109" target="_blank" rel="noopener">https://blog.csdn.net/lilai619/article/details/79695109</a></p><p>说明：</p><ol><li>冲量和学习率就按照0.9 和0.001就好了不需要修改</li><li>Region 82/Region 94/Region106 这3个方向只要不是全部nan就可以，没问题</li><li>训练信息输出，有一行跟上面不一样的，最开始的是iteration次数，然后是train loss，然后是avg train loss， 然后是学习率， 然后是一batch的处理时间， 然后是已经一共处理了多少张图片。 重点关注 train loss 和avg train loss。</li><li>前100次迭代可能会有loss增大的现象。当然各个时候都会有loss变大的现象，原因是加了冲量，不要急，最后会降低的。</li><li>如果训练途中爆显存了，就把random关掉，设置为0。这样显存就一直在4G左右不会往上涨</li></ol>]]></content>
+      
+      
+      <categories>
+          
+          <category> 深度学习 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 深度学习 </tag>
+            
+            <tag> 目标检测 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>初尝电赛---电子设计大赛省赛篇</title>
+      <link href="/blog/2020/05/14/chu-chang-dian-sai-dian-zi-she-ji-da-sai-sheng-sai-pian/"/>
+      <url>/blog/2020/05/14/chu-chang-dian-sai-dian-zi-she-ji-da-sai-sheng-sai-pian/</url>
+      
+        <content type="html"><![CDATA[<p>这是我大二参加电赛后写的，本来发布在了qq空间上，现在搬运过来了。</p><hr><h1 id="初尝电赛—-电子设计大赛省赛篇"><a href="#初尝电赛—-电子设计大赛省赛篇" class="headerlink" title="初尝电赛—-电子设计大赛省赛篇"></a>初尝电赛—-电子设计大赛省赛篇</h1><p>快要毕业了，之前就一直想写点什么，记录一下在大学期间参加比赛的经历。一个是纯粹为了记录，以后估计就不会有这样经历了，这些比赛也就只有本科生才能参加，尤其是电赛国赛，基本上整个4年就只能参加一次。二是因为顺便总结一下在比赛期间遇到的问题。三个呢，是因为以后可能会遇到要写大学经历的情况，所以这次一次性写清楚，以后直接copy。所以就直接在空间把我大学中4次大型比赛的经历记录下来。</p><p>写之前呢，说一些题外话。</p><p>刚发现QQ空间有记录代码的功能，支持java、 Python、c、cpp、makefile、http 好多好多语言。所以就想着准备在qq空间记录 一些程序方面的笔记，当然硬件方面的也会记。笔记特别重要，之前有在电脑上和本子上写过笔记，但是基本上都不见了（电脑卡了就重装系统。然后重装就莫名不见了）所以干脆写在空间里算了。</p><p>然后就是有关于电力电子、开关电源方面的经验笔记。介于老师要我提供给他有关于我在这两三年在电力电子方面的比赛经验，以便于实验室训练教学微笑 。所以我还是认命写吧。就算以后不搞电源了，但是还是不希望把这些经验忘了。至于发不发空间的话，看情况吧白眼 。</p><p>有关于电赛，我看到有很多人好像不是很懂省赛和国赛到底是什么意思，在这里可以科普一下。电赛指的是大学生电子设计竞赛。我们所说的国赛指的是教育部的全国大学生电子设计竞赛。<br><a href="https://sbimg.cn/image/p5f2o" target="_blank" rel="noopener"><img src="https://wx1.sbimg.cn/2020/05/14/psb.jpg" alt="psb.jpg"></a></p><p>国赛是每逢奇数年8月份举办一次，也就是两年举办一次。以瑞萨公司赞助，教育部高等教育司主办，最高设立国家奖以及瑞萨杯（特等奖），最低奖项设立为省三等奖。</p><p>而省赛则是各个省的教育厅在该省内举办的电子设计大赛，每逢偶数年8月份举办一次，统一由TI公司赞助，所以也叫TI杯。比如湖南省的就叫做湖南省大学生电子设计大赛（ti杯），最高奖项设立为省一等奖，最低奖项设立为省三等奖。</p><p>所以我们所说的省赛和国赛虽然都是电子设计大赛，但是却没啥关系。一个偶数年举办，一个奇数年举办。顺便再说一下邀请赛吧</p><p>邀请赛全名为全国大学生电子设计竞赛“TI杯”模拟电子系统设计专题邀请赛。每逢偶数年9月份举行一次，时间在省赛稍微往后，和省赛没啥关系，省赛没拿奖都可以去，不过规定了每个学校只能派1-2队去（学校怎么选就看学校的了）。最高奖项为全国特等奖，最低奖项为全国三等奖（只要拿奖，就是国家奖）。</p><p>接下来就来说说我的第一个比赛吧</p><h2 id="初尝电赛—-电子设计大赛省赛篇-1"><a href="#初尝电赛—-电子设计大赛省赛篇-1" class="headerlink" title="初尝电赛—-电子设计大赛省赛篇"></a>初尝电赛—-电子设计大赛省赛篇</h2><p>2016年的夏天，也就是我大二升大三的暑假，这是我第一次暑假不回家，待在实验室的经历。刚开始是有点不习惯，不过后来觉得还好，至少空调可以随便开。我没有回家，在实验室训练了一个暑假，为的就是参加偶数年8月举办的TI杯省赛。</p><p>说一下比赛相关的赛制流程：</p><ul><li>比赛：这次省赛的比赛时间是，一天一夜，当天早上8点出题，第二天早上8点结束。3人小组需要在24小时内，按照比赛的出题要求，完成电子设计作品。</li><li>评测：比赛结束后每个人什么都不能带走，离开实验楼，在实验楼门口等待评测叫号。专家评审团会一个一个的测试作品打分，在评测作品之前，会叫上该组成员过来操作作品，专家不会动你的作品，专家只会动测试用的仪器设备。专家测试完所有功能，找组长签字，若没有异议签完字，就结束了。</li></ul><p>我们组当然也是由3人组成的，不过总觉得分工有点乱，估计是当初太嫩了，我负责程序和电路调试，还有论文。还有一个专门负责焊接，另一个也是负责焊接。省赛是只能用他们提供的洞洞板，也就是说从头焊到尾，对于焊接的工作量非常大，所以就两个人焊接。不过比赛的时候并没有什么卵用。因为比赛只发一个板子，也就是说同一时间只能一个人焊。至于电路设计，我们前期基本上都把电路小模块设计好了，到时候根据题目要求拼在一起就可以了。毕竟省赛简单。</p><h2 id="前期训练"><a href="#前期训练" class="headerlink" title="前期训练"></a>前期训练</h2><p>在比赛前期，也就是暑假训练时期，我记得我们的日常生活基本上都在实验室里度过，外面热的要死，所以基本上不太出去瞎逛，每天在实验室点外卖，搞得一堆的垃圾，还经常被实验楼的楼管骂。晚上的话，我基本上是回寝室睡，但是我们组另外两个就有点疯了，基本就没回过寝室，一直待在实验室。我有时候也会在实验室里通宵。但是不像他们那样每天都修仙。</p><p>我在训练时期的工作有点多，回想起来就是，我好想什么都干：写程序、焊电路、设计电路、调试电路….乱七八糟。但是主要的话是做程序和调试电路，我这里说的调试电路，就是找出电路中的错误。焊接完电路，给我以后，我会先让他通电运行，但是通电运行的结果往往都不尽人意，就没几次能够一次性成功的。每次都会出现各种各样的问题，严重的就直接炸了。这时候我就需要依据各种现象，通过仪器测量收集现象，通过这些现象联系理论知识进行分析，最后锁定问题所在，说白了有点像医生的工作。但是说的简单，实际做起来是非常难的。相信在实验室待过的人应该非常清楚那种，找错误找了一个星期都找不出来的感受吧，最后无奈的问学长，结果学长说一堆：试试这个、试试那个。最后试了半天没出来，然后学长说：那我也不知道了。我相信这种苦逼的情况应该待在实验室的人都经历过吧。</p><p>我记得有一次，我们用双面洞洞板焊电路，用过的肯定都知道，双面洞洞板很容易在反面漏锡的。那一次我们就是因为在反面漏锡然后锡碰到了反面的元器件，导致了短路，但是因为短路的信号线，所以不会炸，只是导致了系统工作不起来。但是我当初并不知道，只知道系统工作不正常，由于系统比较庞大，找了半天，也不知道问题在哪。最后我浪费了我一整天的时间才把问题找出来。一个不小心就会导致后期调试的时候花费更多的时间来找错误，这是比赛的时候绝对不能出现的情况。</p><h2 id="比赛"><a href="#比赛" class="headerlink" title="比赛"></a>比赛</h2><p>比赛的前一天需要布置现场，由于刚好这次的省赛是轮到我们学校举办，所以我们有更多的时间来布置现场，怎么布置现场呢，就是把比赛需要用到的所有东西，全部搬到比赛现场，搬到我们所在的桌子上。比赛要求的是器材元器件自备，毕竟有一堆东西，肯定不能比赛当天搬，所以比赛允许提前搬到现场。忙到很晚才会寝室休息。回寝室后躺在床上，特别紧张。毕竟是第一次参加这种比赛，而且牺牲了一整个暑假，就是为了明天，不紧张才怪。我记得过了一会后，还收到了辅导员的一条短信，里面满满的鼓励。所以紧张感少了很多（虽然我知道是群发的）。</p><p>拿到题目以后，松了口气。题目是我们训练过的：24Vto36V单相逆变器。原理很简单，24V直流先用boost升压到60V，再经过一个SPWM驱动的全桥逆变电路，降到36V交流，输出通过软件PID控制稳定在36V。但是我们失误了，从头失误到尾。</p><p>刚开始由于没想到比赛只能提供一个板子，所以只能由一个人焊电路，所以主电路交给了主焊手。然后焊了将近一个白天衰 。我干嘛呢？由于程序很简单，我几分钟就把程序写完了，然后分分钟搞定论文，然后就…….发呆、着急。当初没办法，就一个板子主焊手没焊完，我们也不知道干嘛，所以就坐在那里干着急。其实我当初应该睡一觉，因为晚上电路焊完后，就是我的主场了，调试电路顺利的话一下就可以搞好，但是一旦出现问题就麻烦了，我需要飞快运转大脑，在错综复杂的线路中找出问题所在处。</p><p>墨菲定理说道，你不希望发生什么，那么久偏偏会发生什么。所以在调试电路的时候，我们的电路…….烧了。烧的芯片是IR2104，一个mos管驱动芯片。然后我就需要收集现象啊，在烧的瞬间，各个监测点的电压电流的变化趋势。当初真的很嫩，解决问题3分靠推理7分靠运气。每次都是猜一猜，然后换上芯片试一下，但是每次的结果都是：烧！烧！烧！最后我们合计了一下，我们一晚上烧掉了20片IR2104、8片IR2110、5块单片机最小系统板以及不计其数的元器件。还好最后找出了问题所在，主要是因为辅助电源的输入贴片电容，选的是耐压25V的。耐压有点小，导致了辅助电源供电不正常。辅助电源不正常，整个系统也就乱套了，烧哪里都很正常。</p><p>虽然不会每次通电都烧了，但是我们发现，还是会有一定几率的烧电路。但是那个时候，我已经快不行了。已经凌晨4点了，我吧那个问题找出来以后，就倒了，感觉随时都有可能猝死。这绝对不是大家说的什么通宵打游戏的感觉，本身电路就很复杂，就清醒的状态来看，都有点头晕，更何况晚上3、4点困得不行的时候。于是乎直接躺在地上睡了一个小时。</p><p>所以最后测试的时候是完完全全抱着侥幸的心理测的。因为根据我们的统计，这个系统在测试的时候有40%的概率会崩盘。当初测试的时候，整个手都在抖，而且不停的出汗，无奈只能交给另一个人来操作了，操作很简单。但是我们都特别小心翼翼，其实不光我紧张，我们三个人的心全部都揪着。一旦出了意外，就意味着整个暑假的功夫都白费。不过好在，只是最后测短路保护的时候出了意外，只有最后一项的分没有拿到。当时我们都高兴坏了。</p><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>最后结果却不太理想，我们本来是可以拿省一等奖的，可是考虑到一个学校不能拿超过两个的一等奖，而我们学校，除了我们组还有两个大三组也做的很好，所以我们就只能拿了个省二等奖。</p><p>其实对于拿不拿奖，现在看起来完全不重要，包括后面国赛的时候也是的。在国赛的时候也有很多意外情况发生，但是在国赛的时候，我没有一丝的紧张感，其实完全没有把它当做是一场比赛，只是单纯的做出一个作品。输赢无所谓，重要的是过程。所以国赛最后测试的所有操作，也都是我动的手，没有省赛那样的紧张感，手也没有抖，也没有出汗。因为我知道，当我把这个作品做出来的时候，我已经赢了。</p><p>由于一下子写不了那么多，后面还有三个比赛经历：TI杯电子设计大赛专题邀请赛、教育机器人大赛、全国大学电子设计大赛国赛。每一个比赛，都对我的成长有着很大的帮助，在这些比赛中我都学到了很多知识和经验，每一个比赛过程中也都有着与众不同、扣人心弦的经历。每一个比赛都值得纪念。</p><p>省赛结束后，拿到我的手机，我就马上拍了一下这张图。这就是当初省赛时，我们座的位置。<br><a href="https://sbimg.cn/image/pM4Jl" target="_blank" rel="noopener"><img src="https://wx2.sbimg.cn/2020/05/14/psb2.jpg" alt="psb2.jpg"></a></p><p>ps.事实证明喝红牛咖啡提神毛线用都没有，该睡的时候还是想睡。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 日记 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 日记 </tag>
+            
+            <tag> 电赛 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>高翔slam14 project 出现double free or corruption (out)问题解决</title>
+      <link href="/blog/2020/05/13/gao-xiang-slam-project-chu-xian-double-free-or-corruption-out-wen-ti-jie-jue/"/>
+      <url>/blog/2020/05/13/gao-xiang-slam-project-chu-xian-double-free-or-corruption-out-wen-ti-jie-jue/</url>
+      
+        <content type="html"><![CDATA[<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>高翔slam project 0.3 在make的时候一切正常。但是在运行的时候会报错：<code>double free or corruption (out)</code><br>在用gdb调试的时候，可以知道调试信息：</p><pre><code>double free or corruption (out)Program received signal SIGABRT, Aborted.__GI_raise (sig=sig@entry=6) at ../sysdeps/unix/sysv/linux/raise.c:5151    ../sysdeps/unix/sysv/linux/raise.c: 没有那个文件或目录.(gdb) bt#0  0x00007ffff57d9e97 in __GI_raise (sig=sig@entry=6) at ../sysdeps/unix/sysv/linux/raise.c:51#1  0x00007ffff57db801 in __GI_abort () at abort.c:79#2  0x00007ffff5824897 in __libc_message (action=action@entry=do_abort, fmt=fmt@entry=0x7ffff5951b9a &quot;%s\n&quot;)    at ../sysdeps/posix/libc_fatal.c:181#3  0x00007ffff582b90a in malloc_printerr (str=str@entry=0x7ffff5953870 &quot;double free or corruption (out)&quot;) at malloc.c:5350#4  0x00007ffff5832e75 in _int_free (have_lock=0, p=0x555555821f10, av=0x7ffff5b86c40 &lt;main_arena&gt;) at malloc.c:4278#5  0x00007ffff5832e75 in __GI___libc_free (mem=0x555555821f20) at malloc.c:3124#6  0x00007ffff50ecc4d in g2o::EdgeProjectP2MC_Intrinsics::~EdgeProjectP2MC_Intrinsics() () at /usr/local/lib/libg2o_types_sba.so#7  0x00007ffff557b1f7 in g2o::Factory::registerType(std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; const&amp;, g2o::AbstractHyperGraphElementCreator*) () at /usr/local/lib/libg2o_core.so#8  0x00007ffff50e4b1a in _GLOBAL__sub_I_types_sba.cpp () at /usr/local/lib/libg2o_types_sba.so#9  0x00007ffff7de5733 in call_init (env=0x7fffffffdc60, argv=0x7fffffffdc48, argc=2, l=&lt;optimized out&gt;) at dl-init.c:72#10 0x00007ffff7de5733 in _dl_init (main_map=0x7ffff7ffe170, argc=2, argv=0x7fffffffdc48, env=0x7fffffffdc60) at dl-init.c:119#11 0x00007ffff7dd60ca in _dl_start_user () at /lib64/ld-linux-x86-64.so.2#12 0x0000000000000002 in  ()#13 0x00007fffffffe01a in  ()#14 0x00007fffffffe060 in  ()#15 0x0000000000000000 in  ()</code></pre><p>刚开始以为是g2o的问题，所以一直在搜索。</p><h2 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h2><p>就在高翔slam的gihub网址上看到了解决方案：<a href="https://github.com/gaoxiang12/slambook/issues/111" target="_blank" rel="noopener">link</a><br>将<code>set( CMAKE_CXX_FLAGS &quot;-std=c++11 -march=native -O3&quot; )</code>改成<code>set( CMAKE_CXX_FLAGS &quot;-std=c++11 -O3&quot; )</code><br>就删掉了一个<code>-march=native</code>然后重新编译，居然就可以运行了 。</p><h2 id="资料查阅"><a href="#资料查阅" class="headerlink" title="资料查阅"></a>资料查阅</h2><p>可是据我所知<code>-march=native</code>应该是一个指定目标程序的cpu架构来进行程序优化。native就是相当于自检测cpu。总之-march是gcc优化选项。<br>具体参考：<a href="https://wiki.gentoo.org/wiki/GCC_optimization/zh-cn" target="_blank" rel="noopener">link</a></p><p>我查阅到gcc官网记录了这个bug：<a href="http://gcc.gnu.org/ml/gcc-bugs/2016-03/msg00915.html" target="_blank" rel="noopener">Bug c/70136</a><br>不过环境不一样，我的机器是：</p><blockquote><p>Intel i7 6700k<br>ubuntu 18.04<br>gcc 5.5</p></blockquote><p>具体原因后期再看，不过应该是环境的原因，和代码没关系。</p><h2 id="5-6更新"><a href="#5-6更新" class="headerlink" title="5.6更新"></a>5.6更新</h2><p>貌似只要加了-march=native<br>所有的节点与边的析构函数都会报错。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 技术总结 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> g2o c++ 报错修复 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>我的第一个博客~</title>
+      <link href="/blog/2020/05/13/wo-de-di-yi-ge-bo-ke/"/>
+      <url>/blog/2020/05/13/wo-de-di-yi-ge-bo-ke/</url>
+      
+        <content type="html"><![CDATA[<h2 id="2020-5-13-第一篇博客"><a href="#2020-5-13-第一篇博客" class="headerlink" title="2020-5-13 第一篇博客"></a>2020-5-13 第一篇博客</h2><blockquote><p>搭建教程参考：<a href="https://zhuanlan.zhihu.com/p/35668237" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/35668237</a></p></blockquote><p>原本记录笔记的csdn弃了，还是自己搭建一个博客最爽，之后会主要记录一些技术上会踩的坑、经验分享总结、学习笔记。<br>而且会把我从本科以来写的东西，陆陆续续转到这个网站上来。总是被人吐槽我写作水平太差，希望能用这个契机好好训练自己写的能力吧。</p><p>欧拉公式镇楼</p><script type="math/tex; mode=display">e^{ix}=cosx+isinx</script>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> 日记 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>404</title>
+      <link href="/blog/2019/07/20/404/"/>
+      <url>/blog/2019/07/20/404/</url>
+      
+        <content type="html"><![CDATA[]]></content>
+      
+      
+      
+    </entry>
+    
+    
+  
+  
+</search>
